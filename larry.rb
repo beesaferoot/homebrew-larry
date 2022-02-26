@@ -1,3 +1,5 @@
+require "language/go"
+
 class Larry < Formula
   desc "Larry 🐦 is a really simple Twitter bot generator that tweets random repositories from Github built in Go"
   homepage "https://github.com/ezeoleaf/larry"
@@ -8,10 +10,15 @@ class Larry < Formula
   depends_on "go" => :build
 
   def install
-      system "go", "build", *std_go_args(ldflags: "-s -w")
+      ENV["GOPATH"] = buildpath
+      path = buildpath/"src/github.com/ezeoleaf/larry"
+      path.install Dir["*"]
+      cd path do
+        system "go", "build", "-o", "#{bin}/larry"
+      end
   end
 
   test do
-    assert_match /Twitter bot that publishes random information from providers/, shell_output("#{bin}/larry -h", 1)
+    assert_match /Twitter bot that publishes random information from providers/, shell_output("#{bin}/larry","-h")
   end
 end
