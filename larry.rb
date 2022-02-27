@@ -14,7 +14,7 @@ class Larry < Formula
       path = buildpath/"src/github.com/ezeoleaf/larry"
       path.install Dir["*"]
       cd path do
-        system "go", "build", "-o", "#{bin}/larry", "#{bin}/cmd/larry"
+        system "go", "build", "-o", "#{bin}/larry", "./cmd/larry"
       end
   end
 
